@@ -1,8 +1,8 @@
 <hr>
-<h5>Create portable static executables from dynamic executables that will run on every distribution of linux without the need of recompiling, <a target="_blank" href="http://www.elfex-pro.com">Click here</a> for more information</h5>
-<hr>
-
-<b>DISCLAIMER</b>: Fern-Wifi-Cracker is designed to be used in testing and discovering flaws in ones own network with the aim of fixing the flaws detected, <b>DO NOT</b> use the program on networks for which you dont have permission, i am not responsible for whatever damage you cause by using this software.
+  <h5>Create portable static executables from dynamic executables that will run on every distribution of linux without the need of recompiling, <a target="_blank" href="http://www.elfex-linker.com">Click here</a> for more information</h5>
+  <hr>
+  
+<b>DISCLAIMER</b>: Fern-Wifi-Cracker is designed to be used in testing and discovering flaws in one's own network with the aim of fixing the flaws detected, <b>DO NOT</b> use the program on networks for which you don't have permission, I am not responsible for whatever damage you cause by using this software.
 <hr/> 
 
 Visit <a href="http://www.fern-pro.com/">http://www.fern-pro.com</a> for newer downloads
@@ -28,7 +28,7 @@ and installed manually
 
 <p>1. <a href="http://www.aircrack-ng.org/">Aircrack-NG</a></p>
 <p>2. <a href="http://www.secdev.org/projects/scapy/">Python-Scapy</a></p>
-<p>3. <a href="http://www.riverbankcomputing.co.uk/software/pyqt/intro">Python Qt4</a></p>
+<p>3. <a href="http://www.riverbankcomputing.co.uk/software/pyqt/intro">Python Qt5</a></p>
 <p>4. <a href="http://www.python.org/">Python</a></p>
 <p>5. <a href="http://subversion.tigris.org/">Subversion</a></p>
 <p>6. <a href="http://invisible-island.net/xterm/">Xterm</a></p>
@@ -92,3 +92,7 @@ When the button is clicked, allow to download update files until it displays the
 https://github.com/savio-code/ghost-phisher
 
 https://github.com/savio-code/hexorbase
+
+<hr>
+<h4><i>Please support Fern Wifi Cracker development</i></h4>
+<h4>Bitcoin: &nbsp;&nbsp;  1AoBfNLfwDrw4ofZXZVm9YfeaFCXtG9k9B</h4>
