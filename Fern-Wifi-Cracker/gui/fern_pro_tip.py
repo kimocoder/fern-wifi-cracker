@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
+from gui.main_window import font_size
 
-#
-# Created: Thu Aug 07 19:58:03 2014
-#      by: PyQt5 UI code generator 4.10.1
-#
-# WARNING! All changes made in this file will be lost!
 import os
+
 from PyQt5.QtWidgets import *
-from main_window import font_size
 from PyQt5 import QtCore, QtWidgets, QtGui
 
 font_setting = font_size()

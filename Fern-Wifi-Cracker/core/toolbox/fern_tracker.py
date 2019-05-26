@@ -1,11 +1,7 @@
-import os
-import thread
-import sqlite3
-
 import tracker_core
-
 from gui.geotrack import *
-from core  import variables
+from core import variables
+import os, _thread, sqlite3
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -106,12 +102,12 @@ class Fern_geolocation_tracker(QtWidgets.QDialog,Ui_fern_geotrack):
         if self.database_radio.isChecked():
             fern_map_access.set_mac_address(self.get_unprocessed_mac())
             self.track_button.setText('Tracking...')
-            thread.start_new_thread(self.display_tracking,())
+            _thread.start_new_thread(self.display_tracking,())
         else:
             if fern_map_access.isValid_Mac(self.get_unprocessed_mac()):
                 fern_map_access.set_mac_address(self.get_unprocessed_mac())
                 self.track_button.setText('Tracking...')
-                thread.start_new_thread(self.display_tracking,())
+                _thread.start_new_thread(self.display_tracking,())
             else:
                 QtWidgets.QMessageBox.warning(self,'Invalid Mac Address',variables.invalid_mac_address_error.strip('/n'))
                 self.display_html(variables.html_instructions_message)
@@ -134,7 +130,7 @@ class Fern_geolocation_tracker(QtWidgets.QDialog,Ui_fern_geotrack):
 
     def display_tracking(self):
         ''' Processes and displays map '''
-        if int(variables.commands.getstatusoutput('ping www.google.com -c 3')[0]):
+        if int(variables.subprocess.getstatusoutput('ping www.google.com -c 3')[0]):
             self.network_timeout_signal.emit()
         else:
             self.display_map_signal.emit()

@@ -1,5 +1,7 @@
+from gui.main_window import font_size
+
 import os
-from main_window import font_size
+
 from PyQt5 import QtCore, QtWidgets, QtGui
 
 font_setting = font_size()
@@ -10,13 +12,13 @@ try:
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class toolbox_win(object):
-    def setupUi(self, toolbox_win):
-        toolbox_win.setObjectName(_fromUtf8("toolbox_win"))
-        toolbox_win.resize(736, 304)
+class core.toolbox_win(object):
+    def setupUi(self, core.toolbox_win):
+        core.toolbox_win.setObjectName(_fromUtf8("toolbox_win"))
+        core.toolbox_win.resize(736, 304)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("%s/resources/1295905972_tool_kit.png"%(os.getcwd()))), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        toolbox_win.setWindowIcon(icon)
+        core.toolbox_win.setWindowIcon(icon)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(toolbox_win)
         self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
         self.groupBox_2 = QtWidgets.QGroupBox(toolbox_win)
@@ -187,8 +189,8 @@ class toolbox_win(object):
         self.retranslateUi(toolbox_win)
         QtCore.QMetaObject.connectSlotsByName(toolbox_win)
 
-    def retranslateUi(self, toolbox_win):
-        toolbox_win.setWindowTitle(QtWidgets.QApplication.translate("toolbox_win", "Fern - ToolBox", None, 0))
+    def retranslateUi(self, core.toolbox_win):
+        core.toolbox_win.setWindowTitle(QtWidgets.QApplication.translate("toolbox_win", "Fern - core.toolbox", None, 0))
         self.groupBox_2.setTitle(QtWidgets.QApplication.translate("toolbox_win", "Features", None, 0))
         self.geotrack_button.setText(QtWidgets.QApplication.translate("toolbox_win", "Geolocatory Tracker", None, 0))
         self.cookie_hijack_button.setText(QtWidgets.QApplication.translate("toolbox_win", "Cookie Hijacker", None, 0))

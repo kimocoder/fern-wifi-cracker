@@ -22,12 +22,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-
-import os
-import time
-import sqlite3
-import subprocess
-
+import os, time, sqlite3, subprocess
 
 # CREATE TABLE moz_cookies (id INTEGER PRIMARY KEY, baseDomain TEXT, name TEXT, value TEXT, host TEXT, path TEXT, expiry INTEGER, lastAccessed INTEGER, creationTime INTEGER, isSecure INTEGER, isHttpOnly INTEGER, CONSTRAINT moz_uniqueid UNIQUE (name, host, path))
 
@@ -62,7 +57,7 @@ class Mozilla_Cookie_Core(object):
         mozilla_cursor = mozilla_cookie_db.cursor()
         try:
             mozilla_cursor.execute(str(sql_statement))
-        except Exception,e:
+        except Exception:
             mozilla_cursor.close()
             os.remove(self.cookie_database)
             self._create_moz_cookies()
@@ -86,7 +81,7 @@ class Mozilla_Cookie_Core(object):
     def calculate_mozilla_creationTime(self):
         crude_index = "0123456789"
         creation_time = str(int(time.time()))
-        for add in xrange(16 - (len(creation_time) + 3)):
+        for add in range(16 - (len(creation_time) + 3)):
             creation_time += crude_index[add]
         creation_time += "000"
         return(creation_time)
@@ -117,17 +112,16 @@ class Mozilla_Cookie_Core(object):
 
 
     def kill_Process(self,process_name):
-        import commands
-        pids = commands.getstatusoutput("pidof " + process_name)[1]
+        import subprocess
+        pids = subprocess.getstatusoutput("pidof " + process_name)[1]
         for pid in pids.split():
-            commands.getstatusoutput("kill " + pid)
+            subprocess.getstatusoutput("kill " + pid)
 
 
     def get_Cookie_Path(self,cookie_name):
         '''Finds the cookie path from user's profile
            sets cookie_database variable to cookie path'''
         cookie_path = str()
-        file_object = open(os.devnull,"w")
         userprofile = os.path.expanduser("~")
         for root,direc,files in os.walk(userprofile,True):
             if((cookie_name in files) and ("firefox" in root.lower())):

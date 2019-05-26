@@ -1,7 +1,7 @@
 from core import variables
 
 from gui.tips import *
-from gui.toolbox import *
+from core.toolbox import *
 from gui.settings import *
 from gui.geotrack import *
 from gui.font_settings import *
@@ -11,9 +11,9 @@ from gui.attack_settings import *
 from core.settings import *
 from gui.fern_pro_tip import *
 
-#from toolbox.fern_tracker import *
-# from toolbox.fern_cookie_hijacker import *
-from toolbox.fern_ray_fusion import *
+#from core.toolbox.fern_tracker import *
+# from core.toolbox.fern_cookie_hijacker import *
+from core.toolbox.fern_ray_fusion import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -38,7 +38,7 @@ class tool_box_window(QtWidgets.QDialog,toolbox_win):
 
 
     #
-    #   TOOLBOX FEATURES
+    #   core.toolbox FEATURES
     #
     def geotrack_exec(self):
         QtWidgets.QMessageBox.warning(self,"Geo Tracker","This feature has been deprecated")
@@ -46,7 +46,7 @@ class tool_box_window(QtWidgets.QDialog,toolbox_win):
 
     def cookie_hijack_exec(self):
         try:
-            from toolbox import fern_cookie_hijacker
+            from core.toolbox import fern_cookie_hijacker
         except ImportError:
             QtWidgets.QMessageBox.warning(self,"Scapy Dependency","Scapy library is currently not installed \nPlease run \"apt-get install python-scapy\" to install the dependency")
             return
