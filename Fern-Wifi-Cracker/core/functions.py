@@ -1,8 +1,4 @@
-import os
-import re
-import sqlite3
-import commands
-import subprocess
+import os, re, sqlite3, subprocess
 
 ################### DATABASE INSERTION FUNCTIONS ##############
 #
@@ -106,7 +102,7 @@ def write(arg,arg2):
     open_.close()
 
 def remove(arg,arg2):
-    commands.getstatusoutput('rm -r %s/%s'%(arg,arg2))  #'rm - r /tmp/fern-log/file.log
+    subprocess.getstatusoutput('rm -r %s/%s'%(arg,arg2))  #'rm - r /tmp/fern-log/file.log
 
 
 

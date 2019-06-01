@@ -1,13 +1,14 @@
-import re
-from core.fern import *
+from core.fern import tips_window, is_WPS_Device, browse_Reaver_Link, shutil
 from gui.attack_panel import *
 from core.functions import *
 from core.settings import *
 from core.variables import *
+import time, _thread, subprocess
 
 from core import variables
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 #
 # Wpa Attack window class for decrypting wep keys
 #
@@ -69,7 +70,7 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
         self.wordlist_lines_counted_signal['QString'].connect(self.set_progress_bar)
 
         if len(self.client_list) == 0:
-            thread.start_new_thread(self.auto_add_clients,())
+            _thread.start_new_thread(self.auto_add_clients,())
 
         victim_access_point = sorted(wpa_details.keys())[0]
         variables.victim_mac = wpa_details[victim_access_point][0]
@@ -125,7 +126,7 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
 
         self.wpa_disable_items()
         self.ap_listwidget.clear()
-        thread.start_new_thread(self.Check_New_Access_Point,())
+        _thread.start_new_thread(self.Check_New_Access_Point,())
 
         self.keys_cracked_label.setVisible(False)
         self.display_current_wordlist()                                                             # Display previous wordlist
@@ -237,7 +238,7 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
         self.client_update()
         self.update_client_signal.emit()
         if len(self.client_list) == 0:
-            thread.start_new_thread(self.auto_add_clients,())
+            _thread.start_new_thread(self.auto_add_clients,())
 
 
     def show_tips(self):
@@ -365,9 +366,9 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
 
 
     def cancel_wpa_attack(self):
-        commands.getstatusoutput('killall airodump-ng')
-        commands.getstatusoutput('killall aircrack-ng')
-        commands.getstatusoutput('killall aireplay-ng')
+        subprocess.getstatusoutput('killall airodump-ng')
+        subprocess.getstatusoutput('killall aircrack-ng')
+        subprocess.getstatusoutput('killall aireplay-ng')
         self.attack_button.clicked.disconnect(self.cancel_wpa_attack)
         self.attack_button.clicked.connect(self.launch_attack)
         icon = QtGui.QIcon()
@@ -505,7 +506,7 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
                 if not self.started:
                     self.client_not_in_list_signal.emit()
                 if(loop_control):
-                    thread.start_new_thread(self.probe_for_Client_Mac,())
+                    _thread.start_new_thread(self.probe_for_Client_Mac,())
                     loop_control = False
                 self.client_update()
                 self.update_client_signal.emit()
@@ -577,17 +578,17 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
         while '1 handshake' not in reader('/tmp/fern-log/WPA-DUMP/capture_status.log'):
             if(self.started == False):                                  # Break deauthentication loop if attack has been stopped
                 return
-            thread.start_new_thread(self.deauthenticate_client,())
+            _thread.start_new_thread(self.deauthenticate_client,())
             time.sleep(10)
-            thread.start_new_thread(self.capture_check,())
+            _thread.start_new_thread(self.capture_check,())
         self.handshake_captured_signal.emit()
-        commands.getstatusoutput('killall airodump-ng')
-        commands.getstatusoutput('killall aireplay-ng')
+        subprocess.getstatusoutput('killall airodump-ng')
+        subprocess.getstatusoutput('killall aireplay-ng')
         time.sleep(1)
         self.bruteforcing_signal.emit()
 
-        thread.start_new_thread(self.launch_brutefore,())
-        thread.start_new_thread(self.wordlist_check,())
+        _thread.start_new_thread(self.launch_brutefore,())
+        _thread.start_new_thread(self.wordlist_check,())
 
 
 
@@ -619,7 +620,7 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
 
     def launch_attack(self):
         if(self.automate_checkbox.isChecked()):
-            thread.start_new_thread(self.launch_attack_2,())
+            _thread.start_new_thread(self.launch_attack_2,())
         else:
             self.wpa_launch_attack()
 
@@ -706,9 +707,9 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
             return
 
         self.stop_scan_signal.emit()
-        commands.getstatusoutput('killall airodump-ng')
-        commands.getstatusoutput('killall airmon-ng')
-        commands.getstatusoutput('rm -r /tmp/fern-log/WPA-DUMP/*')
+        subprocess.getstatusoutput('killall airodump-ng')
+        subprocess.getstatusoutput('killall airmon-ng')
+        subprocess.getstatusoutput('rm -r /tmp/fern-log/WPA-DUMP/*')
 
         if self.select_client == str():
             self.associate_label.setEnabled(True)
@@ -734,14 +735,14 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
                     self.progress_bar_max = int(self.settings.read_last_settings(get_temp_name))    # set the progress_bar variable to the cached count
                     self.progressBar.setMaximum(self.progress_bar_max)
                 else:
-                    thread.start_new_thread(self.find_dictionary_length,(get_temp_name,))           # open thread to count the number of lines in the new wordlist
+                    _thread.start_new_thread(self.find_dictionary_length,(get_temp_name,))           # open thread to count the number of lines in the new wordlist
 
 
-                commands.getstatusoutput('killall airodump-ng')
-                commands.getstatusoutput('killall aireplay-ng')
+                subprocess.getstatusoutput('killall airodump-ng')
+                subprocess.getstatusoutput('killall aireplay-ng')
                 self.associate_label.setEnabled(True)
                 self.associate_label.setText("<font color=yellow>Probing Access Point</font>")
-                commands.getstatusoutput('touch /tmp/fern-log/WPA-DUMP/capture_status.log')
+                subprocess.getstatusoutput('touch /tmp/fern-log/WPA-DUMP/capture_status.log')
                 self.progressBar.setValue(0)
                 self.attack_button.clicked.disconnect(self.launch_attack)
                 self.attack_button.clicked.connect(self.cancel_wpa_attack)
@@ -752,9 +753,9 @@ class wpa_attack_dialog(QtWidgets.QDialog,Ui_attack_panel):
                 self.started = True
                 self.thread_control = False
 
-                thread.start_new_thread(self.wpa_capture,())
+                _thread.start_new_thread(self.wpa_capture,())
 
-                thread.start_new_thread(self.capture_loop,())
+                _thread.start_new_thread(self.capture_loop,())
 
 
     def find_dictionary_length(self,filename):

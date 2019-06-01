@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 
-import os
-import sys
-import time
-import shutil
-import commands
+from core import fern, functions
+import os, sys, time, subprocess, shutil
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 def initialize():
-    'Set Working directory'
+    # Set Working directory
     if 'core' in os.listdir(os.getcwd()):
         create_directory()
     else:
@@ -23,9 +20,11 @@ def initialize():
 
 
 def restore_files():
-    '''Fern 1.2 update algorithm fails to update the new version files
-        therefore this piece of code corrects that defect when running
-        the program after an update from 1.2'''
+    '''
+    Fern 1.2 update algorithm fails to update the new version files
+    therefore this piece of code corrects that defect when running
+    the program after an update from 1.2
+    '''
 
     update_directory = '/tmp/Fern-Wifi-Cracker/'
 
@@ -44,14 +43,10 @@ def restore_files():
             shutil.copytree(update_directory + update_file,os.getcwd() + os.sep + update_file)
 
     for new_file in os.listdir(os.getcwd()):
-        os.chmod(os.getcwd() + os.sep + new_file,0777)
-
-
-
+        os.chmod(os.getcwd() + os.sep + new_file, 0o777)
 
 def create_directory():
-    'Create directories and database'
-
+    # Create directories and database
     if not os.path.exists('fern-settings'):
         os.mkdir('fern-settings')                               # Create permanent settings directory
     if not os.path.exists('key-database'):                      # Create Database directory if it does not exist
@@ -59,11 +54,11 @@ def create_directory():
 
 
 def cleanup():
-    'Kill all running processes'
-    commands.getstatusoutput('killall airodump-ng')
-    commands.getstatusoutput('killall aircrack-ng')
-    commands.getstatusoutput('killall airmon-ng')
-    commands.getstatusoutput('killall aireplay-ng')
+    # Kill all running processes
+    subprocess.getstatusoutput('killall airodump-ng')
+    subprocess.getstatusoutput('killall aircrack-ng')
+    subprocess.getstatusoutput('killall airmon-ng')
+    subprocess.getstatusoutput('killall aireplay-ng')
 
 
 
@@ -95,4 +90,3 @@ if __name__ == '__main__':
 
     cleanup()
     sys.exit()
-

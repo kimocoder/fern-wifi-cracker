@@ -26,9 +26,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import os
-import time
-import thread
+import os, time, _thread, threading
 import threading
 
 from scapy.all import *
@@ -85,7 +83,7 @@ class Fern_MITM_Class:
         def _set_Gateway_MAC(self):
             '''Fetches the Gateway MAC address'''
             self._gateway_MAC_addr = str()
-            thread.start_new_thread(self._gateway_MAC_Probe,())
+            _thread.start_new_thread(self._gateway_MAC_Probe,())
             while not self._gateway_MAC_addr:
                 reply = sniff(filter = "arp",count = 2)[1]
                 if(reply.haslayer(ARP)):
@@ -133,7 +131,7 @@ class Fern_MITM_Class:
             '''Receives ARP is-at from Hosts on
                 the subnet'''
             packet_count = 1
-            thread.start_new_thread(self._network_Hosts_Probe,())
+            _thread.start_new_thread(self._network_Hosts_Probe,())
             sniff(filter = "arp",prn = self._get_Network_Hosts_Worker,store = 0)
 
 
@@ -170,9 +168,9 @@ class Fern_MITM_Class:
             self._local_mac = self.get_Mac_Address(self.interface_card).strip()
             self._local_IP_Address = self.get_IP_Adddress()
             self._set_Gateway_MAC()
-            thread.start_new_thread(self._get_Network_Hosts,())                 # Get all network hosts on subnet
+            _thread.start_new_thread(self._get_Network_Hosts,())                 # Get all network hosts on subnet
             if(route_enabled):
-                thread.start_new_thread(self._redirect_network_traffic,())      # Redirect traffic to default gateway
+                _thread.start_new_thread(self._redirect_network_traffic,())      # Redirect traffic to default gateway
             self._poison_arp_cache()                                            # Poison the cache of all network hosts
 
 
@@ -188,9 +186,9 @@ class Fern_MITM_Class:
 
         def get_IP_Adddress(self):
             import re
-            import commands
+            import subprocess
             regex = "inet addr:((\d+.){3}\d+)"
-            sys_out = commands.getstatusoutput("ifconfig " + self.interface_card)[1]
+            sys_out = subprocess.getstatusoutput("ifconfig " + self.interface_card)[1]
             result = re.findall(regex,sys_out)
             if(result):
                 return(result[0][0])

@@ -1,17 +1,10 @@
-import re
-import os
-import time
-import signal
-import sqlite3
-import commands
-import subprocess
+from gui.cookie_hijacker import *
+from core.toolbox.mozilla_cookie_core import *
+from core.toolbox.cookie_hijacker_core import *
+
+import re, os, time, subprocess, _thread, signal, sqlite3
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-from gui.cookie_hijacker import *
-from mozilla_cookie_core import *
-from cookie_hijacker_core import *
-
 
 class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
     emit_buffer_red_light_signal = QtCore.pyqtSignal()
@@ -155,7 +148,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
 
 
     def firefox_is_installed(self):
-        if(commands.getstatusoutput("which firefox")[0]):
+        if(subprocess.getstatusoutput("which firefox")[0]):
             return(False)
         return(True)
 
@@ -168,7 +161,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
     def reset_card_state(self):
         for card in os.listdir("/sys/class/net"):
             if(card.startswith("mon")):
-                commands.getoutput("airmon-ng stop " + card)
+                subprocess.getoutput("airmon-ng stop " + card)
 
 
     def refresh_interface(self):
@@ -176,7 +169,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
         self.interface_card_info = {}
         self.combo_interface.clear()
         self.host_interface = str()
-        interfaces = commands.getoutput("iwconfig").splitlines()
+        interfaces = subprocess.getoutput("iwconfig").splitlines()
 
         self.channel_display_option(False)
         self.reset_card_state()
@@ -224,7 +217,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
             self.clear_items()
             return
         else:
-            monitor_status = commands.getoutput("iwconfig " + selected_interface)
+            monitor_status = subprocess.getoutput("iwconfig " + selected_interface)
 
             if(("Monitor" in monitor_status) and ((selected_interface,selected_channel) == self.host_interface)):
                 self.monitor_interface = selected_interface
@@ -243,9 +236,9 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
                 if(answer == QtWidgets.QMessageBox.Yes):
                     if(selected_channel == self.promiscious_mode):
                         self.active_monitor_mode = "Promiscious Mode"
-                        monitor_output = commands.getstatusoutput("airmon-ng start " + selected_interface)
+                        monitor_output = subprocess.getstatusoutput("airmon-ng start " + selected_interface)
                     else:
-                        monitor_output = commands.getstatusoutput("airmon-ng start %s %s" % (selected_interface,selected_channel))
+                        monitor_output = subprocess.getstatusoutput("airmon-ng start %s %s" % (selected_interface,selected_channel))
 
                     if(monitor_output[0] == 0):
                         monitor_interface = re.findall("mon\d+",monitor_output[1])
@@ -334,7 +327,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
 
     def open_web_address(self,address):
         shell = "firefox %s"
-        commands.getoutput(shell % address)
+        subprocess.getoutput(shell % address)
 
 
     def Hijack_Session(self):
@@ -360,7 +353,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
             str(entries[3]),str(entries[4]),str(entries[5]),
             str(entries[6]))
 
-        thread.start_new_thread(self.open_web_address,(web_address,))
+        _thread.start_new_thread(self.open_web_address,(web_address,))
 
 
 
@@ -401,7 +394,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
     # Blinks the cookie buffer light on http packet detection
     def emit_led_buffer(self):
         self.cookie_detection_led.setPixmap(self.green_light)
-        thread.start_new_thread(self.delay_thread,())
+        _thread.start_new_thread(self.delay_thread,())
 
     def emit_buffer_red_light(self):
         self.cookie_detection_led.setPixmap(self.red_light)
@@ -575,11 +568,11 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
             self.cookie_core.create_cookie_cache()                      # Create Cookie Cache
             self.cookie_core.truncate_database()                        # Delete all old items from database
 
-        except Exception,message:
+        except Exception as message:
             self.display_error("Failed to create cookie database: " + str(message))
             return
 
-        thread.start_new_thread(self.prepare_Mozilla_Database,())       # Trucates and prepares database
+        _thread.start_new_thread(self.prepare_Mozilla_Database,())       # Trucates and prepares database
 
 
 
@@ -597,7 +590,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
         self.cookie_core.control = True                                 # Start Core Thread processes
         self.cookie_core.monitor_interface = self.monitor_interface     # Holds the monitor interface e.g mon0,mon1
 
-        thread.start_new_thread(self.Led_Blink,())                      # Blinks Sniff Led for some number of seconds
+        _thread.start_new_thread(self.Led_Blink,())                      # Blinks Sniff Led for some number of seconds
         self.start_sniffing_button.setEnabled(False)
 
 
@@ -612,7 +605,7 @@ class Fern_Cookie_Hijacker(QtWidgets.QDialog,Ui_cookie_hijacker):
             self.ethernet_mode_radio.setEnabled(False)
             self.passive_mode_radio.setEnabled(False)
 
-        except Exception,message:
+        except Exception as message:
             self.display_error(str(message))
             self.sniffing_status_led.setPixmap(self.red_light)
             self.cookie_detection_led.setPixmap(self.red_light)

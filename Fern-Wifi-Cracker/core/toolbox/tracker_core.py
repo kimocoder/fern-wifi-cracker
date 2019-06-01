@@ -25,11 +25,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-
-import re
-import json
-import httplib
+import re, json
+import http
 
 class Fern_Geolocation(object):
     def __init__(self):
@@ -38,7 +35,7 @@ class Fern_Geolocation(object):
     def _fern_geo_access(self):
         geo_data = dict()
         api_key='{"version":"1.1.0","request_address":true,"wifi_towers":[{"mac_address":"%s","ssid":"","signal_strength":-50}]}'%(self.mac_address)
-        api_data = httplib.HTTPConnection('www.google.com')
+        api_data = http.client.HTTPConnection('www.google.com')
         api_data.request('POST','/loc/json',api_key)
         data_ = api_data.getresponse()
         if(data_):

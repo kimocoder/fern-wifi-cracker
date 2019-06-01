@@ -1,4 +1,4 @@
-from core.fern import *
+import os, subprocess
 
 ############# WEP/WPA/WPS GLOBAL VARIABLES #################
 
@@ -55,7 +55,7 @@ directory = os.getcwd()
 # Create temporary log directory
 #
 if 'fern-log' in tmp_direc:
-    commands.getstatusoutput('rm -r %s'%(direc + log_direc))    # Delete directory in /fern-log if it already exists in /tmp/
+    subprocess.getstatusoutput('rm -r %s'%(direc + log_direc))    # Delete directory in /fern-log if it already exists in /tmp/
     os.mkdir(direc + log_direc)
 else:
     os.mkdir(direc + log_direc)                                 # Create /tmp/fern-log/
@@ -66,7 +66,7 @@ else:
 os.mkdir('/tmp/fern-log/WPA')                                     # Create /tmp/fern-log/WPA
 
 #
-# Evecute commands without display to stdout
+# Evecute subprocess without display to stdout
 #
 def exec_command(command,directory = None):
     output = open(os.devnull,'w')
@@ -96,7 +96,7 @@ a valid mac address has 6 segment with 2 hexadecimal values in each segment e.g 
 # Html strings
 #
 
-# TOOLBOX OBJECTS
+# core.toolbox OBJECTS
 
 html_network_timeout_error = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

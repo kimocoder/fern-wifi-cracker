@@ -1,8 +1,9 @@
-import core
-from PyQt5.QtWidgets import *
-from gui.database import *
-from core.functions import *
+from core.database import database_ui
+from core.functions import set_key_entries, fern_database_query
 from core.variables import *
+import sqlite3
+
+from PyQt5 import QtWidgets, QtCore
 
 #
 #  Class for Database key entries

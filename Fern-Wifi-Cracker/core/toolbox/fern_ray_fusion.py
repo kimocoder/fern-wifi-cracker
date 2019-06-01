@@ -1,12 +1,9 @@
-import re
-import string
-import webbrowser
-from PyQt5 import QtCore, QtGui, QtWidgets
-
 from gui.ray_fusion import *
 from core.variables import *
 from bruteforce_core import *
+import re, string, webbrowser
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 tutorial_link = "http://www.youtube.com/watch?v=_ztQQWMoVX4"    # Video Tutorial link
 
@@ -20,7 +17,7 @@ class Ray_Fusion(QtWidgets.QDialog,Ui_ray_fusion):
         self.custom_user_wordlist = str()          # Path to the custom user wordlist
         self.custom_password_wordlist = str()      # Path to the custom password wordlist
 
-        self.start_flag = True                      # If False then Stop
+        self.start_flag = True                     # If False then Stop
 
         self.table_index = 0
         self.bruteforce_core = Bruteforce_Attack()      # Bruteforce Attack Class
@@ -166,10 +163,10 @@ class Ray_Fusion(QtWidgets.QDialog,Ui_ray_fusion):
         row_number = self.credential_table.rowCount()
         column_number = self.credential_table.columnCount()
 
-        for row in xrange(row_number):
+        for row in range(row_number):
             self.credential_table.removeRow(0)
 
-        for column in xrange(column_number):
+        for column in range(column_number):
             self.credential_table.removeColumn(0)
 
         self.save_credentials.setEnabled(False)
@@ -249,9 +246,9 @@ class Ray_Fusion(QtWidgets.QDialog,Ui_ray_fusion):
             html_header = ray_fusion_reports_html % (target_address,target_port,target_service)
             file_object.write(html_header)
 
-            for row in xrange(rows):
+            for row in range(rows):
                 file_object.write("<tr>")
-                for column in xrange(columns):
+                for column in range(columns):
                     item = self.credential_table.item(row,column)
                     file_object.write('<td>' + str(item.text()) + '</td>')
                 file_object.write("</tr>")

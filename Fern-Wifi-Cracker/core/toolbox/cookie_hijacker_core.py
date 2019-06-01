@@ -25,13 +25,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import re
-import os
-import time
-import thread
-import sqlite3
-import logging
-import threading
+import os, time, re, _thread, threading, sqlite3, logging
 
 from PyQt5 import QtCore
 
@@ -205,7 +199,7 @@ class Cookie_Hijack_Core(QtCore.QThread):
                     if(self.control):
                         self.New_Cookie_Captured_signal.emit()
 
-        except AttributeError,message:
+        except AttributeError as message:
             pass
 
         finally:

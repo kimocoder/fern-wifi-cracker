@@ -1,13 +1,7 @@
-# -*- coding: utf-8 -*-
+from gui.main_window import font_size
 
-# Form implementation generated from reading ui file 'C:\Users\SAVIOUR\Desktop\untitled.ui'
-#
-# Created: Sun Sep 02 13:02:23 2012
-#      by: PyQt5 UI code generator 4.8.4
-#
-# WARNING! All changes made in this file will be lost!
 import os
-from main_window import font_size
+
 from PyQt5 import QtCore, QtWidgets, QtGui
 
 font_setting = font_size()
