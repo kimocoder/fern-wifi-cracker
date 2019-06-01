@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import os
 import sys
 import time
 import shutil
 import subprocess
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -61,12 +60,12 @@ def create_directory():
 
 def cleanup():
     'Kill all running processes'
-    subprocess.getstatusoutput('killall airodump-ng')
-    subprocess.getstatusoutput('killall aircrack-ng')
-    subprocess.getstatusoutput('killall airmon-ng')
-    subprocess.getstatusoutput('killall aireplay-ng')
 
-
+    # TODO airmon-ng stop <interface> -> Fix wireless adapter down
+    commands.getstatusoutput('killall airodump-ng')
+    commands.getstatusoutput('killall aircrack-ng')
+    commands.getstatusoutput('killall airmon-ng')
+    commands.getstatusoutput('killall aireplay-ng')
 
 initialize()
 
@@ -79,21 +78,25 @@ from gui import *
 
 
 if __name__ == '__main__':
-    app = QtWidgets.QApplication(sys.argv)
-    run = fern.mainwindow()
+    try:
+        app = QtWidgets.QApplication(sys.argv)
+        run = fern.mainwindow()
 
-    pixmap = QtGui.QPixmap("%s/resources/screen_splash.png" % (os.getcwd()))
-    screen_splash = QtWidgets.QSplashScreen(pixmap,QtCore.Qt.WindowStaysOnTopHint)
-    screen_splash.setMask(pixmap.mask())
-    screen_splash.show()
-    app.processEvents()
+        pixmap = QtGui.QPixmap("%s/resources/screen_splash.png" % (os.getcwd()))
+        screen_splash = QtWidgets.QSplashScreen(pixmap,QtCore.Qt.WindowStaysOnTopHint)
+        screen_splash.setMask(pixmap.mask())
+        screen_splash.show()
+        app.processEvents()
 
-    time.sleep(3)
+        time.sleep(3)
 
-    screen_splash.finish(run)
-    run.show()
-    app.exec_()
-
-    cleanup()
-    sys.exit()
+        screen_splash.finish(run)
+        run.show()
+        app.exec_()
+    except Exception as error:
+        print("%s" %(error)) # Show error msg to stdout
+    finally:
+        # Clean up everything if the app crashes
+        cleanup()
+        sys.exit()
 
