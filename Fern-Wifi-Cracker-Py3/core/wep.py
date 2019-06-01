@@ -6,7 +6,6 @@ from core.settings import *
 from core.variables import *
 from gui.attack_panel import *
 
-
 from core import variables
 
 #

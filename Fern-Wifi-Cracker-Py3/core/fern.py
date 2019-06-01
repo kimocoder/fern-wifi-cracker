@@ -3,7 +3,7 @@ import re
 import sys
 import time
 import _thread
-import urllib.request as urllib2
+import urllib3
 import shutil
 import sqlite3
 import subprocess
